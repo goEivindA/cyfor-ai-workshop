@@ -180,6 +180,9 @@ section[data-bg="hero"] .eyebrow {
 .card-grid.four {
   grid-template-columns: repeat(4, 1fr);
 }
+.card-grid.three {
+  grid-template-columns: repeat(3, 1fr);
+}
 
 .brand-card {
   background: #ffffff;
@@ -337,6 +340,7 @@ section[data-bg="hero"] .eyebrow {
 
 /* ─── Responsive ─── */
 @media (max-width: 900px) {
+  .card-grid.three,
   .card-grid.four,
   .two-panel {
     grid-template-columns: 1fr;

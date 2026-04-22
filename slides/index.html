@@ -25,13 +25,12 @@
       </div>
 
       <aside class="notes">
-        Dette er ikke en workshop om å få Copilot til å skrive mest mulig kode.
-        Det er en workshop om å gjøre AI til en del av et leveransesystem som er enklere å stole på.
-
-        Reisen går fra:
-        – liten app
-        – litt repo-kontekst
-        – til reusable skills, bedre problemforståelse og en tydelig issue-til-PR-flyt
+        <ul>
+          <li>Ikke en workshop om mest mulig AI-generert kode</li>
+          <li>Handler om AI som del av et leveransesystem vi kan stole på</li>
+          <li>Vi går fra liten app og litt repo-kontekst</li>
+          <li>Til skills, bedre problemforståelse og tydelig issue-til-PR-flyt</li>
+        </ul>
       </aside>
     </section>
 
@@ -62,14 +61,15 @@
       </div>
 
       <aside class="notes">
-        Poenget er at AI blir mer nyttig når den får:
-        – bedre struktur rundt seg
-        – gjenbrukbare arbeidsmåter
-        – klarere problemdefinisjoner
-        – tydelige kontrollpunkter for mennesker
-
-        "Mer autonomi" er ikke målet i seg selv.
-        Målet er bedre flyt uten å miste kontroll.
+        <ul>
+          <li>AI blir mer nyttig med struktur, gjenbruk og tydelige kontrollpunkter</li>
+          <li>Del 1: struktur rundt backlogg, issues og repo</li>
+          <li>Del 2: gjenbrukbare arbeidsmåter med skills og MCP</li>
+          <li>Del 3: bedre problemdefinisjon før vi koder</li>
+          <li>Del 4: flyt fra issue til merge med menneskelig kontroll</li>
+          <li>Mer autonomi er ikke målet i seg selv</li>
+          <li>Målet er bedre flyt uten å miste kontroll</li>
+        </ul>
       </aside>
     </section>
 
@@ -93,11 +93,12 @@
       </div>
 
       <aside class="notes">
-        Vis raskt på maskinen:
-        1. Kjør appen.
-        2. Vis at UI-et fremdeles snakker om "items".
-        3. Pek på at dette er bevisst lite – perfekt for små, reviewbare endringer.
-        4. Nevn at API-endringer flyter via OpenAPI / generert klient og videre til frontend.
+        <ul>
+          <li>Vis appen raskt i kjøring</li>
+          <li>Pek på at UI-et fortsatt bruker ordet "items"</li>
+          <li>Dette er bevisst lite og egnet for små, reviewbare endringer</li>
+          <li>API-endringer flyter via OpenAPI, generert klient og videre til frontend</li>
+        </ul>
       </aside>
     </section>
 
@@ -107,24 +108,30 @@
       <div class="two-panel">
         <div class="info-panel">
           <p class="eyebrow">AGENTS.md</p>
-          <h3>Felles huskelapp for agenter</h3>
-          <p>Hva repoet er, hvordan vi jobber, og hvilke regler som gjelder her.</p>
+          <h3>Varig kontekst for agenten</h3>
+          <p>Forklarer domene, arbeidsmåte, scripts og forventninger uten at vi må gjenta alt i hver prompt.</p>
         </div>
         <div class="info-panel accent">
           <p class="eyebrow">CLAUDE.md</p>
-          <h3>Samme idé, annet verktøy</h3>
-          <p>En lignende instruksjonsfil brukt i Claude-økosystemet.</p>
+          <h3>Samme prinsipp, annet økosystem</h3>
+          <p>Filnavnet varierer, men idéen er den samme: viktig repo-kunnskap skal bo sammen med koden.</p>
         </div>
       </div>
       <div class="quote-box">
-        Poenget er ikke filnavnet. Poenget er varig kontekst som følger repoet.
+        Problemet vi løser: AI blir fort inkonsistent når konteksten bare finnes i chatten eller i hodene våre.
       </div>
 
       <aside class="notes">
-        – AGENTS.md er repo-spesifikke instrukser for agenten.
-        – Typisk innhold: domene, arkitektur, scripts, hva som ofte glemmes.
-        – CLAUDE.md er samme mønster i et annet verktøy/økosystem.
-        – Hovedpoeng: viktig kontekst skal bo i repoet, ikke bare i hodet til utvikleren.
+        <ul>
+          <li>Problemet: viktig kontekst lever bare i chatten eller i hodene våre</li>
+          <li>Da blir AI-svar mer tilfeldige og mindre delbare</li>
+          <li>AGENTS.md er en liten repo-nær kontrakt, ikke bare dokumentasjon</li>
+          <li>Den bør si noe om domene, struktur, kommandoer, regler og fallgruver</li>
+          <li>CLAUDE.md er samme prinsipp i et annet økosystem</li>
+          <li>Poenget er varig, delt og versjonert kontekst</li>
+          <li>Fallgruver: for generisk, for langt, eller utdatert innhold</li>
+          <li>Tommelfingerregel: kort, konkret og repo-spesifikt</li>
+        </ul>
       </aside>
     </section>
 
@@ -132,22 +139,35 @@
     <section data-bg="task">
       <h1>Oppgave 1</h1>
       <h2>Gi Copilot et sted å jobbe</h2>
-      <div class="two-panel">
-        <div class="info-panel">
-          <h3>Hvorfor</h3>
-          <p>God AI starter sjelden med prompten. Den starter med et ryddig prosjekt.</p>
+      <div class="card-grid three">
+        <div class="brand-card">
+          <h3>Hva vi løser</h3>
+          <p>Utydelig backlogg og manglende repo-kontekst gjør agenten avhengig av gjetting.</p>
         </div>
-        <div class="info-panel accent">
-          <h3>Vi gjør</h3>
-          <p>GitHub-issues, <code>AGENTS.md</code> og første ende-til-ende-endring fra items til ressurser.</p>
+        <div class="brand-card">
+          <h3>Hvorfor dette hjelper</h3>
+          <p>Issues avgrenser jobben. <code>AGENTS.md</code> gir faste rammer. En liten ende-til-ende-endring tester hele flyten.</p>
         </div>
+        <div class="brand-card">
+          <h3>Pass på</h3>
+          <p>Hold issues små, skriv bare nyttig kontekst, og vær bevisst på kontraktendringer når <code>items</code> blir <code>resources</code>.</p>
+        </div>
+      </div>
+      <div class="quote-box">
+        Målet er ikke mer tekst. Målet er mindre tvetydighet før deltakerne starter å bygge.
       </div>
 
       <aside class="notes">
-        – GitHub-backloggen skal speile workshopoppgavene.
-        – AGENTS.md er repoets hukommelse for Copilot.
-        – Første feature er liten med vilje:
-          beskrivelse, type/kategori, redigering etter opprettelse, språk fra "items" til "resources".
+        <ul>
+          <li>Denne oppgaven er grunnmuren for resten av workshopen</li>
+          <li>Før skills og autonomi må agenten ha et ryddig sted å jobbe</li>
+          <li>Deltakerne lager eller rydder små, tydelige GitHub-issues</li>
+          <li>Deltakerne legger inn AGENTS.md med repo-spesifikk kontekst</li>
+          <li>Deltakerne gjør en liten ende-til-ende-endring fra "items" til "resources"</li>
+          <li>Poenget er å treffe API, kontrakt, generert klient og UI-tekst</li>
+          <li>En issue avgrenser ansvar og scope, ikke bare en todo</li>
+          <li>Fallgruver: store issues, vage instrukser, eller bare UI-tekstbytte</li>
+        </ul>
       </aside>
     </section>
 
@@ -157,18 +177,27 @@
       <div class="two-panel">
         <div class="info-panel">
           <h3>En navngitt arbeidsmåte</h3>
-          <p>Ikke bare en prompt, men et gjenbrukbart mønster for en bestemt jobb.</p>
+          <p>En skill pakker inn en bestemt oppgave, ønsket prosess og relevante sjekkpunkter.</p>
         </div>
         <div class="info-panel accent">
-          <h3>En god skill er liten</h3>
-          <p>Kort, konkret, tydelig avgrenset og lett å bruke igjen.</p>
+          <h3>Verdien er repeterbarhet</h3>
+          <p>Når samme type jobb skal gjøres ofte, gir skills mer stabil kvalitet enn fri prompting alene.</p>
         </div>
+      </div>
+      <div class="quote-box">
+        En skill er nyttig når vi vil standardisere en arbeidsmåte — ikke når vi bare vil lagre en lang prompt.
       </div>
 
       <aside class="notes">
-        – En skill pakker inn god praksis.
-        – Eksempler: review-pr, refine-issue, triage-issue.
-        – Hva gjør en skill god: tydelig formål, riktig scope, praktiske sjekkpunkter.
+        <ul>
+          <li>Skill er mer enn en smart prompt</li>
+          <li>Prompt kan være engangsbruk, skill skal være repeterbar</li>
+          <li>Eksempler her: review-pr, refine-issue, triage-issue</li>
+          <li>En god skill sier når den brukes og hva den forventer som input</li>
+          <li>Den beskriver vurderinger, steg og hva et godt resultat er</li>
+          <li>Fallgruver: for bred skill, skjult repo-kontekst, manglende vedlikehold</li>
+          <li>Hovedpoeng: flytte god praksis fra person til team</li>
+        </ul>
       </aside>
     </section>
 
@@ -177,22 +206,28 @@
       <h1>Hva er en MCP?</h1>
       <div class="two-panel">
         <div class="info-panel dark">
-          <h3>Verktøy + fersk kontekst</h3>
-          <p>MCP lar agenten bruke eksterne systemer i stedet for å gjette fra modellminne.</p>
+          <h3>Model Context Protocol</h3>
+          <p>MCP lar agenten hente data og bruke verktøy i sanntid i stedet for å stole blindt på modellminne.</p>
         </div>
         <div class="info-panel">
-          <h3>Nyttig når vi trenger mer enn tekst</h3>
-          <p>Dokumentasjon, GitHub, API-er og andre kilder kan hentes inn der og da.</p>
+          <h3>Nyttig når vi trenger ferske fakta</h3>
+          <p>Dokumentasjon, GitHub og andre systemer kan kobles inn akkurat når vi trenger dem i arbeidsflyten.</p>
         </div>
       </div>
       <div class="quote-box">
-        I oppgave 2 er poenget ikke bare å installere en MCP, men å bruke den til en bedre beslutning.
+        Problemet vi løser: modellen kan være god til resonnering, men dårlig som kilde til oppdatert sannhet.
       </div>
 
       <aside class="notes">
-        – MCP = måten agenten kobler seg til verktøy og kunnskapskilder utenfor modellen.
-        – Context7 er et godt eksempel fordi det lar oss hente oppdatert dokumentasjon.
-        – Installasjon alene er ikke verdien – verdien kommer når MCP-en faktisk endrer implementasjonen.
+        <ul>
+          <li>MCP = standardisert tilgang til verktøy og datakilder</li>
+          <li>Modellen er god på resonnering, men ikke en oppdatert fasit</li>
+          <li>MCP gir ferske fakta når vi trenger dem</li>
+          <li>Context7 er eksempel på dokumentasjon hentet i sanntid</li>
+          <li>Verdien er bedre beslutninger, ikke bare mer fancy tooling</li>
+          <li>Fallgruver: tro at installasjon er verdien, eller bruke data ukritisk</li>
+          <li>Gi ikke agenten flere verktøy enn den faktisk trenger</li>
+        </ul>
       </aside>
     </section>
 
@@ -200,21 +235,34 @@
     <section data-bg="task">
       <h1>Oppgave 2</h1>
       <h2>Gjør god praksis gjenbrukbar</h2>
-      <div class="two-panel">
-        <div class="info-panel">
-          <h3>Hvorfor</h3>
-          <p>Fri prompting kan fungere, men den er ikke stabil nok når vi vil jobbe likt hver gang.</p>
+      <div class="card-grid three">
+        <div class="brand-card">
+          <h3>Hva vi løser</h3>
+          <p>Samme jobb blir ellers løst ulikt fra gang til gang, og modellen kan gjette på dokumentasjon eller arkitektur.</p>
         </div>
-        <div class="info-panel accent">
-          <h3>Vi gjør</h3>
-          <p>En review-skill, Context7 som MCP, og et lite søk/filter som faktisk går via API-et.</p>
+        <div class="brand-card">
+          <h3>Hvorfor dette hjelper</h3>
+          <p>En review-skill gir fast kvalitetssjekk. Context7 gir fersk dokumentasjon. API-basert filtrering holder oss på riktig side av kontrakten.</p>
         </div>
+        <div class="brand-card">
+          <h3>Pass på</h3>
+          <p>Hold skillen smal, bruk MCP som støtte og ikke fasit, og ikke «løs» filteret bare lokalt i UI hvis oppgaven handler om API-et.</p>
+        </div>
+      </div>
+      <div class="quote-box">
+        Målet er repeterbar kvalitet: samme type jobb skal gi omtrent samme standard, også når personen eller prompten varierer.
       </div>
 
       <aside class="notes">
-        – En skill er mer enn en lagret prompt – den er en gjenbrukbar arbeidsmåte.
-        – Context7 brukes for å hente fersk dokumentasjon i stedet for å gjette.
-        – Vi vil se at filtrering skjer via API og kontrakt, ikke bare lokalt i UI.
+        <ul>
+          <li>Bygger videre på struktur fra oppgave 1</li>
+          <li>Del 1: lag en review-skill for det som faktisk betyr noe i en PR</li>
+          <li>Del 2: koble på Context7 for fersk dokumentasjon</li>
+          <li>Del 3: bygg søk/filter via API-et, ikke bare lokalt i UI</li>
+          <li>Kombinasjonen viser standardisering, mindre gjetting og riktig lagdeling</li>
+          <li>Fallgruver: for generell skill, ukritisk dokumentasjonsbruk, frontend-only filter</li>
+          <li>Praktisk tips: én felles skills-katalog hvis flere verktøy brukes</li>
+        </ul>
       </aside>
     </section>
 
@@ -223,19 +271,28 @@
       <h1>Kontekst før kode</h1>
       <div class="two-panel">
         <div class="info-panel">
-          <h3>Prompten er bare en del av bildet</h3>
-          <p>Kontekst er også mål, regler, avgrensning, dataflyt og språk om domenet.</p>
+          <h3>Prompten er bare én del</h3>
+          <p>Kontekst er også mål, regler, aktører, dataflyt, avgrensning og riktig språk om domenet.</p>
         </div>
         <div class="info-panel accent">
-          <h3>Vage krav gir vage svar</h3>
-          <p>Når problemet er uklart, må vi raffinere før vi bygger.</p>
+          <h3>Vage krav gir dyr omvei</h3>
+          <p>Når problemet er uklart, får vi ofte raske forslag til feil problem. Derfor må vi raffinere før vi bygger.</p>
         </div>
+      </div>
+      <div class="quote-box">
+        Det raskeste til god kode er ofte å bruke litt tid på å rydde i hva problemet faktisk er.
       </div>
 
       <aside class="notes">
-        – "Context engineering" handler om å forbedre arbeidsgrunnlaget, ikke bare prompten.
-        – God kontekst gir: bedre planer, riktigere edge cases, tydeligere akseptansekriterier, mindre omarbeid.
-        – Bro til oppgaven: refine-issue-skillen avdekker skjulte antakelser før implementasjon.
+        <ul>
+          <li>Flytt fokus fra bedre prompting til bedre arbeidsgrunnlag</li>
+          <li>Kontekst er mål, regler, aktører, scope, språk og ferdigdefinisjon</li>
+          <li>Når konteksten mangler, fyller modellen hullene med antakelser</li>
+          <li>Da oppdager teamet ofte konflikter for sent</li>
+          <li>Context engineering er egentlig risikoreduksjon</li>
+          <li>Gir bedre planer, tydeligere akseptansekriterier og mindre omarbeid</li>
+          <li>Bro til neste oppgave: refine issue før løsning låses</li>
+        </ul>
       </aside>
     </section>
 
@@ -243,21 +300,35 @@
     <section data-bg="task">
       <h1>Oppgave 3</h1>
       <h2>Ikke kod før problemet er tydelig</h2>
-      <div class="two-panel">
-        <div class="info-panel">
-          <h3>Hvorfor</h3>
-          <p>Vage krav skjuler regler, antakelser og konfliktpunkter.</p>
+      <div class="card-grid three">
+        <div class="brand-card">
+          <h3>Hva vi løser</h3>
+          <p>Bestillingen «støtt planlegging og reservasjoner» kan bety mange ulike ting og skjuler ofte motstridende regler.</p>
         </div>
-        <div class="info-panel accent">
-          <h3>Vi gjør</h3>
-          <p>En refine-issue-skill som gjør «støtt planlegging og reservasjoner» om til noe som faktisk kan bygges.</p>
+        <div class="brand-card">
+          <h3>Hvorfor dette hjelper</h3>
+          <p>En refine-issue-skill tvinger fram aktører, statuser, konflikter, business rules og non-goals før vi begynner å kode.</p>
         </div>
+        <div class="brand-card">
+          <h3>Pass på</h3>
+          <p>Skill mellom fakta, antakelser og åpne spørsmål. Ikke la skillen hoppe rett til skjermbilder eller datamodell.</p>
+        </div>
+      </div>
+      <div class="quote-box">
+        Målet er ikke å skrive mer om problemet. Målet er å fjerne tvetydighet som ellers blir til feil kode.
       </div>
 
       <aside class="notes">
-        – Før koding må vi forstå: hva som kan bookes, hva en plan betyr,
-          hvilke statuser som finnes, hva som er konflikt og hva som ikke er det.
-        – Målet er å ende med user story, akseptansekriterier, business rules og non-goals.
+        <ul>
+          <li>Dette er ofte den mest undervurderte delen av AI-støttet utvikling</li>
+          <li>Et uklart problem kan gi veldig produktiv kode på feil spor</li>
+          <li>Oppgaven er å raffinere noe bevisst vagt til noe byggbart</li>
+          <li>Spør etter: hva kan reserveres, hva betyr planlegging, hvilke statuser finnes</li>
+          <li>Spør også etter konflikter, harde regler, preferanser og hva som er utenfor scope</li>
+          <li>Målet er ikke kode, men en byggbar issue/spesifikasjon</li>
+          <li>Resultatet bør ha user story, akseptansekriterier, business rules og non-goals</li>
+          <li>Fallgruver: gå rett til løsningsdesign eller glemme negative cases</li>
+        </ul>
       </aside>
     </section>
 
@@ -267,22 +338,26 @@
       <div class="two-panel">
         <div class="info-panel dark">
           <h3>Isoler agenten</h3>
-          <p>Kjør den i en container med bare de CLI-ene og filene den faktisk trenger.</p>
+          <p>Kjør den i en container eller tilsvarende miljø med bare filene og CLI-ene den faktisk trenger.</p>
         </div>
         <div class="info-panel accent">
           <h3>Gi minst mulig tilgang</h3>
-          <p>Bruk egne tokens og identiteter for agenten, med smale rettigheter og tydelige grenser.</p>
+          <p>Bruk egne tokens og identiteter for agenten, med smale rettigheter, tydelige grenser og sporbarhet.</p>
         </div>
       </div>
       <div class="quote-box">
-        Jo mer autonomi du gir, jo viktigere er isolasjon, minste privilegium og egne agent-kontoer.
+        Problemet vi løser: mer autonome agenter kan gjøre mer nytte — og mer skade — hvis rammene er for vide.
       </div>
 
       <aside class="notes">
-        – Løsningen er ikke bare bedre prompting. Løsningen er tekniske guard rails.
-        – Kjør i Docker-container, installer bare nødvendige CLI-er.
-        – Bruk en token laget for agenten, ikke din personlige supertoken.
-        – Behandle agenten som en egen aktør med egen tillitsmodell.
+        <ul>
+          <li>Guard rails er tekniske og organisatoriske rammer, ikke bare gode intensjoner</li>
+          <li>Mer ansvar krever tydelige grenser for lesing, skriving, systemtilgang og identitet</li>
+          <li>Konkrete grep: isolasjon, færrest mulig CLI-er, smale tokens og sporbarhet</li>
+          <li>Bruk egen identitet for agenten, ikke personlig admin-tilgang</li>
+          <li>Fallgruver: for bred tilgang og for mye tillit til review alene</li>
+          <li>Hovedpoeng: god autonomi er orkestrert tillit, ikke blind tillit</li>
+        </ul>
       </aside>
     </section>
 
@@ -313,10 +388,17 @@
       </div>
 
       <aside class="notes">
-        – Semi-autonomi betyr: AI gjør mye arbeid mellom kontrollpunktene,
-          men mennesket eier beslutningene.
-        – Hvis et steg sklir ut, skal neste kontrollpunkt stoppe det.
-        – Små PR-er er en konsekvens av god triage og god plan.
+        <ul>
+          <li>Denne sliden setter rammen for oppgave 4</li>
+          <li>Semi-autonomi betyr mye AI-arbeid mellom tydelige kontrollpunkter</li>
+          <li>Mennesker eier fortsatt beslutningene og overgangene</li>
+          <li>Triage: forstår vi problem og scope riktig?</li>
+          <li>Plan: er løsningen liten, testbar og reviewbar?</li>
+          <li>Review: fant vi feil og risiko før merge?</li>
+          <li>Merge: mennesket tar siste beslutning</li>
+          <li>Kontrollpunkter er tidlig feilhåndtering, ikke unødvendig friksjon</li>
+          <li>Fallgruver: hoppe over triage, godkjenne store planer, se merge som formalitet</li>
+        </ul>
       </aside>
     </section>
 
@@ -337,14 +419,35 @@
         <span class="flow-arrow fragment">→</span>
         <span class="flow-step fragment">Merge</span>
       </div>
+      <div class="card-grid three">
+        <div class="brand-card fragment">
+          <h3>Hva vi løser</h3>
+          <p>Når én agent skal gjøre alt alene, blir både feil og ansvar diffuse.</p>
+        </div>
+        <div class="brand-card fragment">
+          <h3>Hvorfor dette hjelper</h3>
+          <p>Vi deler opp arbeidet i små steg med tydelig ansvar, egne kontrollpunkter og bedre reviewbarhet.</p>
+        </div>
+        <div class="brand-card fragment">
+          <h3>Pass på</h3>
+          <p>Unngå store handoffs uten tydelig output, og ikke automatiser bort menneskelig godkjenning der risikoen er høy.</p>
+        </div>
+      </div>
       <div class="quote-box fragment">
-        Hovedagenten skal først og fremst koordinere spesialiserte steg — ikke være én gigantisk prompt.
+        Hovedagenten skal koordinere spesialiserte steg — ikke være én gigantisk prompt med utydelig ansvar.
       </div>
 
       <aside class="notes">
-        – Nå setter vi sammen alt fra de forrige oppgavene.
-        – Kontrollpunktene er det viktige: triage, plan-godkjenning, PR-review, merge.
-        – AI-review er første pass, menneskelig review er andre pass.
+        <ul>
+          <li>Nå setter vi sammen alt til en helhetlig arbeidsflyt</li>
+          <li>Bruk ordet orkestrering bevisst, ikke magi</li>
+          <li>Vi vil ikke ha én superprompt som gjør alt</li>
+          <li>Vi vil ha små steg med tydelig ansvar: issue, triage, plan, PR, review, merge</li>
+          <li>Små spesialiserte steg gir bedre observabilitet og enklere feilsøking</li>
+          <li>Hvis noe går galt, vet vi hvor i flyten det skjedde</li>
+          <li>Fallgruver: hoppe rett til kode, for store planer, AI-review som erstatning for menneske</li>
+          <li>Poenget er å gjøre AI om til et leveransesystem</li>
+        </ul>
       </aside>
     </section>
 
@@ -358,10 +461,12 @@
       </div>
 
       <aside class="notes">
-        Oppsummer med de fire ordene: struktur, evner, forståelse, flyt.
-
-        Hvis deltakerne sitter igjen med én ting, bør det være:
-        Tillit til AI kommer fra gode rammer og små, tydelige handoffs.
+        <ul>
+          <li>Oppsummer med fire ord: struktur, evner, forståelse, flyt</li>
+          <li>Copilot skal ikke bare hjelpe oss å kode</li>
+          <li>Den skal hjelpe oss å levere på en måte vi kan stole på</li>
+          <li>Tillit kommer fra gode rammer og små, tydelige handoffs</li>
+        </ul>
       </aside>
     </section>
 
@@ -369,6 +474,7 @@
 </div><!-- .reveal -->
 
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
 <script>
   Reveal.initialize({
     hash: true,
@@ -380,6 +486,7 @@
     height: 720,
     margin: 0,
     center: false,
+    plugins: [ RevealNotes ],
   });
 </script>
 </body>
