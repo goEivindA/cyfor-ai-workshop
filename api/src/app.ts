@@ -48,6 +48,23 @@ const ResourceParamsSchema = z.object({
   })
 }).openapi('ResourceParams')
 
+const ListResourcesQuerySchema = z.object({
+  search: z.string().trim().min(1).max(120).optional().openapi({
+    param: {
+      name: 'search',
+      in: 'query'
+    },
+    example: 'conference'
+  }),
+  resourceType: z.enum(RESOURCE_TYPES).optional().openapi({
+    param: {
+      name: 'resourceType',
+      in: 'query'
+    },
+    example: 'room'
+  })
+}).openapi('ListResourcesQuery')
+
 const rootRoute = createRoute({
   method: 'get',
   path: '/',
@@ -84,6 +101,9 @@ const listResourcesRoute = createRoute({
   method: 'get',
   path: '/resources',
   tags: ['Resources'],
+  request: {
+    query: ListResourcesQuerySchema
+  },
   responses: {
     200: {
       description: 'List persisted resources',
@@ -220,7 +240,20 @@ app.openapi(healthRoute, (c) => {
 })
 
 app.openapi(listResourcesRoute, async (c) => {
+  const { search, resourceType } = c.req.valid('query')
+
   const resources = await prisma.resource.findMany({
+    where: {
+      ...(resourceType ? { resourceType } : {}),
+      ...(search
+        ? {
+            OR: [
+              { title: { contains: search } },
+              { description: { contains: search } }
+            ]
+          }
+        : {})
+    },
     orderBy: {
       createdAt: 'desc'
     }
