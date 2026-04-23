@@ -495,7 +495,7 @@ export const deleteResourcesId = (
 
 
 
-export const getDeleteResourcesIdMutationOptions = <TError = ErrorType<unknown>,
+export const getDeleteResourcesIdMutationOptions = <TError = ErrorType<void>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteResourcesId>>, TError,{id: number}, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteResourcesId>>, TError,{id: number}, TContext> => {
 
@@ -524,9 +524,9 @@ const {mutation: mutationOptions} = options ?
 
     export type DeleteResourcesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteResourcesId>>>
 
-    export type DeleteResourcesIdMutationError = ErrorType<unknown>
+    export type DeleteResourcesIdMutationError = ErrorType<void>
 
-    export const useDeleteResourcesId = <TError = ErrorType<unknown>,
+    export const useDeleteResourcesId = <TError = ErrorType<void>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteResourcesId>>, TError,{id: number}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteResourcesId>>,

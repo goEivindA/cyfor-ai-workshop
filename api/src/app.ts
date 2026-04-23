@@ -1,5 +1,6 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { cors } from 'hono/cors'
+import { Prisma } from '@prisma/client'
 import { prisma } from './db.js'
 
 const RootResponseSchema = z.object({
@@ -161,6 +162,9 @@ const deleteResourceRoute = createRoute({
   responses: {
     204: {
       description: 'Remove a persisted resource'
+    },
+    404: {
+      description: 'Resource not found'
     }
   }
 })
@@ -260,11 +264,14 @@ app.openapi(updateResourceRoute, async (c) => {
 app.openapi(deleteResourceRoute, async (c) => {
   const { id } = c.req.valid('param')
 
-  await prisma.resource.deleteMany({
-    where: {
-      id
+  try {
+    await prisma.resource.delete({ where: { id } })
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
+      return c.body(null, 404)
     }
-  })
+    throw e
+  }
 
   return c.body(null, 204)
 })
