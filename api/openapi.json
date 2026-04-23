@@ -192,6 +192,35 @@
         "tags": [
           "Resources"
         ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120,
+              "example": "conference"
+            },
+            "required": false,
+            "name": "search",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "general",
+                "room",
+                "equipment",
+                "vehicle",
+                "person"
+              ],
+              "example": "room"
+            },
+            "required": false,
+            "name": "resourceType",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "List persisted resources",

@@ -6,6 +6,8 @@ import {
   useGetResources,
   usePatchResourcesId,
   usePostResources,
+  type GetResourcesParams,
+  type GetResourcesResourceType,
   type Resource,
 } from "./api";
 import { useQueryClient } from "@tanstack/react-query";
@@ -30,12 +32,20 @@ export default function App() {
   const [description, setDescription] = useState("");
   const [resourceType, setResourceType] = useState<string>("general");
   const [editState, setEditState] = useState<EditState | null>(null);
+  const [search, setSearch] = useState("");
+  const [filterType, setFilterType] = useState<GetResourcesResourceType | "">("");
+
+  const trimmedSearch = search.trim();
+  const queryParams: GetResourcesParams = {
+    ...(trimmedSearch ? { search: trimmedSearch } : {}),
+    ...(filterType ? { resourceType: filterType } : {}),
+  };
 
   const queryClient = useQueryClient();
   const refreshResources = () =>
     queryClient.invalidateQueries({ queryKey: getGetResourcesQueryKey() });
 
-  const resourcesQuery = useGetResources();
+  const resourcesQuery = useGetResources(queryParams);
 
   const createMutation = usePostResources({
     mutation: {
@@ -182,7 +192,45 @@ export default function App() {
         ) : null}
 
         <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-          <h2 className="text-sm font-medium text-slate-700">All resources</h2>
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-sm font-medium text-slate-700">All resources</h2>
+            {trimmedSearch || filterType ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setFilterType("");
+                }}
+                className="text-xs text-slate-500 underline-offset-2 hover:underline"
+              >
+                Clear filters
+              </button>
+            ) : null}
+          </div>
+
+          <div className="mt-3 flex gap-2">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name or description"
+              maxLength={120}
+              className="flex-1 rounded-md border border-slate-300 px-3 py-1.5 text-sm outline-none focus:border-slate-500"
+            />
+            <select
+              value={filterType}
+              onChange={(e) =>
+                setFilterType(e.target.value as GetResourcesResourceType | "")
+              }
+              className="rounded-md border border-slate-300 px-2 py-1.5 text-sm outline-none focus:border-slate-500"
+            >
+              <option value="">All types</option>
+              {resourceTypes.map((t) => (
+                <option key={t} value={t}>
+                  {RESOURCE_TYPE_LABELS[t] ?? t}
+                </option>
+              ))}
+            </select>
+          </div>
 
           {resourcesQuery.isPending ? (
             <p className="mt-3 text-sm text-slate-600">Loading resources...</p>
@@ -290,7 +338,11 @@ export default function App() {
                 )}
               </ul>
             ) : (
-              <p className="mt-3 text-sm text-slate-600">No resources yet.</p>
+              <p className="mt-3 text-sm text-slate-600">
+                {trimmedSearch || filterType
+                  ? "No resources match the current filters."
+                  : "No resources yet."}
+              </p>
             )
           ) : null}
         </section>
