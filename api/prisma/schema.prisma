@@ -7,8 +7,10 @@ datasource db {
   url      = "file:../data/workshop.db"
 }
 
-model Item {
-  id        Int      @id @default(autoincrement())
-  title     String
-  createdAt DateTime @default(now())
+model Resource {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String   @default("")
+  resourceType String   @default("general")
+  createdAt    DateTime @default(now())
 }

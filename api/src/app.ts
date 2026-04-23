@@ -1,5 +1,6 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { cors } from 'hono/cors'
+import { Prisma } from '@prisma/client'
 import { prisma } from './db.js'
 
 const RootResponseSchema = z.object({
@@ -11,21 +12,33 @@ const HealthResponseSchema = z.object({
   status: z.literal('ok')
 }).openapi('HealthResponse')
 
-const ItemSchema = z.object({
+const RESOURCE_TYPES = ['general', 'room', 'equipment', 'vehicle', 'person'] as const
+
+const ResourceSchema = z.object({
   id: z.number().int().openapi({ example: 1 }),
-  title: z.string().min(1).max(120).openapi({ example: 'Build a workshop API' }),
+  title: z.string().min(1).max(120).openapi({ example: 'Conference Room A' }),
+  description: z.string().max(500).openapi({ example: 'Large meeting room with a projector' }),
+  resourceType: z.string().openapi({ example: 'room' }),
   createdAt: z.string().datetime().openapi({ example: '2024-01-01T00:00:00.000Z' })
-}).openapi('Item')
+}).openapi('Resource')
 
-const ItemListResponseSchema = z.object({
-  items: z.array(ItemSchema)
-}).openapi('ItemListResponse')
+const ResourceListResponseSchema = z.object({
+  resources: z.array(ResourceSchema)
+}).openapi('ResourceListResponse')
 
-const CreateItemSchema = z.object({
-  title: z.string().trim().min(1).max(120).openapi({ example: 'Build a workshop API' })
-}).openapi('CreateItem')
+const CreateResourceSchema = z.object({
+  title: z.string().trim().min(1).max(120).openapi({ example: 'Conference Room A' }),
+  description: z.string().trim().max(500).default('').openapi({ example: 'Large meeting room with a projector' }),
+  resourceType: z.enum(RESOURCE_TYPES).default('general').openapi({ example: 'room' })
+}).openapi('CreateResource')
 
-const ItemParamsSchema = z.object({
+const UpdateResourceSchema = z.object({
+  title: z.string().trim().min(1).max(120).optional().openapi({ example: 'Conference Room A' }),
+  description: z.string().trim().max(500).optional().openapi({ example: 'Large meeting room with a projector' }),
+  resourceType: z.enum(RESOURCE_TYPES).optional().openapi({ example: 'room' })
+}).openapi('UpdateResource')
+
+const ResourceParamsSchema = z.object({
   id: z.coerce.number().int().positive().openapi({
     param: {
       name: 'id',
@@ -33,7 +46,7 @@ const ItemParamsSchema = z.object({
     },
     example: 1
   })
-}).openapi('ItemParams')
+}).openapi('ResourceParams')
 
 const rootRoute = createRoute({
   method: 'get',
@@ -67,66 +80,107 @@ const healthRoute = createRoute({
   }
 })
 
-const listItemsRoute = createRoute({
+const listResourcesRoute = createRoute({
   method: 'get',
-  path: '/items',
-  tags: ['Items'],
+  path: '/resources',
+  tags: ['Resources'],
   responses: {
     200: {
-      description: 'List persisted items',
+      description: 'List persisted resources',
       content: {
         'application/json': {
-          schema: ItemListResponseSchema
+          schema: ResourceListResponseSchema
         }
       }
     }
   }
 })
 
-const createItemRoute = createRoute({
+const createResourceRoute = createRoute({
   method: 'post',
-  path: '/items',
-  tags: ['Items'],
+  path: '/resources',
+  tags: ['Resources'],
   request: {
     body: {
       required: true,
       content: {
         'application/json': {
-          schema: CreateItemSchema
+          schema: CreateResourceSchema
         }
       }
     }
   },
   responses: {
     201: {
-      description: 'Create a persisted item',
+      description: 'Create a persisted resource',
       content: {
         'application/json': {
-          schema: ItemSchema
+          schema: ResourceSchema
         }
       }
     }
   }
 })
 
-const deleteItemRoute = createRoute({
-  method: 'delete',
-  path: '/items/{id}',
-  tags: ['Items'],
+const updateResourceRoute = createRoute({
+  method: 'patch',
+  path: '/resources/{id}',
+  tags: ['Resources'],
   request: {
-    params: ItemParamsSchema
+    params: ResourceParamsSchema,
+    body: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: UpdateResourceSchema
+        }
+      }
+    }
   },
   responses: {
-    204: {
-      description: 'Remove a persisted item'
+    200: {
+      description: 'Update a persisted resource',
+      content: {
+        'application/json': {
+          schema: ResourceSchema
+        }
+      }
+    },
+    404: {
+      description: 'Resource not found'
     }
   }
 })
 
-const toItemResponse = (item: { id: number; title: string; createdAt: Date }) => ({
-  id: item.id,
-  title: item.title,
-  createdAt: item.createdAt.toISOString()
+const deleteResourceRoute = createRoute({
+  method: 'delete',
+  path: '/resources/{id}',
+  tags: ['Resources'],
+  request: {
+    params: ResourceParamsSchema
+  },
+  responses: {
+    204: {
+      description: 'Remove a persisted resource'
+    },
+    404: {
+      description: 'Resource not found'
+    }
+  }
+})
+
+const toResourceResponse = (resource: {
+  id: number
+  title: string
+  description: string
+  resourceType: string
+  createdAt: Date
+}) => ({
+  id: resource.id,
+  title: resource.title,
+  description: resource.description,
+  resourceType: resource.resourceType,
+  createdAt: resource.createdAt.toISOString()
 })
 
 const defaultCorsOrigins = ['http://localhost:4173', 'http://localhost:5173']
@@ -165,37 +219,59 @@ app.openapi(healthRoute, (c) => {
   }, 200)
 })
 
-app.openapi(listItemsRoute, async (c) => {
-  const items = await prisma.item.findMany({
+app.openapi(listResourcesRoute, async (c) => {
+  const resources = await prisma.resource.findMany({
     orderBy: {
       createdAt: 'desc'
     }
   })
 
   return c.json({
-    items: items.map(toItemResponse)
+    resources: resources.map(toResourceResponse)
   }, 200)
 })
 
-app.openapi(createItemRoute, async (c) => {
-  const { title } = c.req.valid('json')
-  const item = await prisma.item.create({
+app.openapi(createResourceRoute, async (c) => {
+  const { title, description, resourceType } = c.req.valid('json')
+  const resource = await prisma.resource.create({
     data: {
-      title
+      title,
+      description,
+      resourceType
     }
   })
 
-  return c.json(toItemResponse(item), 201)
+  return c.json(toResourceResponse(resource), 201)
 })
 
-app.openapi(deleteItemRoute, async (c) => {
+app.openapi(updateResourceRoute, async (c) => {
+  const { id } = c.req.valid('param')
+  const updates = c.req.valid('json')
+
+  const existing = await prisma.resource.findUnique({ where: { id } })
+  if (!existing) {
+    return c.body(null, 404)
+  }
+
+  const resource = await prisma.resource.update({
+    where: { id },
+    data: updates
+  })
+
+  return c.json(toResourceResponse(resource), 200)
+})
+
+app.openapi(deleteResourceRoute, async (c) => {
   const { id } = c.req.valid('param')
 
-  await prisma.item.deleteMany({
-    where: {
-      id
+  try {
+    await prisma.resource.delete({ where: { id } })
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
+      return c.body(null, 404)
     }
-  })
+    throw e
+  }
 
   return c.body(null, 204)
 })
