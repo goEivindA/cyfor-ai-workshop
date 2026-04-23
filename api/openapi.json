@@ -36,7 +36,7 @@
           "status"
         ]
       },
-      "Item": {
+      "Resource": {
         "type": "object",
         "properties": {
           "id": {
@@ -47,7 +47,16 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 120,
-            "example": "Build a workshop API"
+            "example": "Conference Room A"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "Large meeting room with a projector"
+          },
+          "resourceType": {
+            "type": "string",
+            "example": "room"
           },
           "createdAt": {
             "type": "string",
@@ -58,36 +67,83 @@
         "required": [
           "id",
           "title",
+          "description",
+          "resourceType",
           "createdAt"
         ]
       },
-      "ItemListResponse": {
+      "ResourceListResponse": {
         "type": "object",
         "properties": {
-          "items": {
+          "resources": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Item"
+              "$ref": "#/components/schemas/Resource"
             }
           }
         },
         "required": [
-          "items"
+          "resources"
         ]
       },
-      "CreateItem": {
+      "CreateResource": {
         "type": "object",
         "properties": {
           "title": {
             "type": "string",
             "minLength": 1,
             "maxLength": 120,
-            "example": "Build a workshop API"
+            "example": "Conference Room A"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "default": "",
+            "example": "Large meeting room with a projector"
+          },
+          "resourceType": {
+            "type": "string",
+            "enum": [
+              "general",
+              "room",
+              "equipment",
+              "vehicle",
+              "person"
+            ],
+            "default": "general",
+            "example": "room"
           }
         },
         "required": [
           "title"
         ]
+      },
+      "UpdateResource": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Conference Room A"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "Large meeting room with a projector"
+          },
+          "resourceType": {
+            "type": "string",
+            "enum": [
+              "general",
+              "room",
+              "equipment",
+              "vehicle",
+              "person"
+            ],
+            "example": "room"
+          }
+        }
       }
     },
     "parameters": {}
@@ -131,18 +187,18 @@
         }
       }
     },
-    "/items": {
+    "/resources": {
       "get": {
         "tags": [
-          "Items"
+          "Resources"
         ],
         "responses": {
           "200": {
-            "description": "List persisted items",
+            "description": "List persisted resources",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ItemListResponse"
+                  "$ref": "#/components/schemas/ResourceListResponse"
                 }
               }
             }
@@ -151,25 +207,25 @@
       },
       "post": {
         "tags": [
-          "Items"
+          "Resources"
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateItem"
+                "$ref": "#/components/schemas/CreateResource"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Create a persisted item",
+            "description": "Create a persisted resource",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Item"
+                  "$ref": "#/components/schemas/Resource"
                 }
               }
             }
@@ -177,10 +233,53 @@
         }
       }
     },
-    "/items/{id}": {
+    "/resources/{id}": {
+      "patch": {
+        "tags": [
+          "Resources"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMinimum": true,
+              "example": 1
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update a persisted resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      },
       "delete": {
         "tags": [
-          "Items"
+          "Resources"
         ],
         "parameters": [
           {
@@ -197,7 +296,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Remove a persisted item"
+            "description": "Remove a persisted resource"
           }
         }
       }
